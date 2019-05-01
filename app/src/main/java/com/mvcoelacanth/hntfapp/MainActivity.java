@@ -28,6 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout donateLinearLayout, loadLinearLayout, menuLinearLayout;
@@ -35,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView downloadLockImageView, bookLockImageView, downloadImageView, bookImageView, hntfLogoImageView;
     private boolean lockDownload = true, lockBook = true;
     private final int PERMISSION_REQUEST_CODE = 11;
-    private final String url = "https://www.oracle.com/technetwork/database/enterprise-edition/oraclenetservices-neteasyconnect-133058.pdf";
-    private final String fileName = "hntf";
+    private final String url = "http://hownottofish.com/HNTF-App-PDF.pdf";
+    private final String fileName = "hntfnew";
 
 
     @Override
@@ -62,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("purchased", true);
+                editor.commit();
+
                 Intent i = new Intent(MainActivity.this, PyamentActivity.class);
                 startActivity(i);
             }
@@ -70,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         downloadRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
                 if (!lockDownload) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (checkPermission()) {
@@ -85,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, "Please donate first", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -368,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean pur = sharedPref.getBoolean("purchased", false);
         if (pur) {
-            hideDonateLayout();
+        //    hideDonateLayout();
             unlockDownloadLayout();
 
         } else {
@@ -379,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
 
         File f = new File(Environment.getExternalStorageDirectory() + "/Android/data/" + getApplicationContext().getPackageName() + "/" + fileName);
         if (f.exists()) {
-            hideDonateLayout();
+          //  hideDonateLayout();
             hideDownloadLayout();
             unlockBookLayout();
         }

@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +87,9 @@ public abstract class DownloadFile extends AsyncTask<Void, Integer, String> {
             output.close();
             input.close();
         } catch (Exception e) {
+            //Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Log.d("error",e.getMessage());
+            e.printStackTrace();
             return "f";
         }
         return "";
